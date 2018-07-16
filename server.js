@@ -2,6 +2,8 @@
 //app dependencies
 require('dotenv').config()
 const express = require('express')
+const mongoose = require('mongoose')
+const db = require('./models')
 
 //express setup
 const app = express()
@@ -27,7 +29,6 @@ const logger = require('morgan')
 app.use(logger('dev'))
 
 //connect to Mongo DB via mongoose
-const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/BlockNewsDB')
 
 //==================================Routing=====================================//

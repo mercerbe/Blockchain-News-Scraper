@@ -6,7 +6,9 @@ const db = require('../models')
 module.exports = app => {
 
 //index page
-
+app.get('/', (req, res) => {
+  res.render('index')
+})
 
 
 
