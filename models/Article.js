@@ -18,9 +18,11 @@ var ArticleSchema = new Schema({
     required: true
   },
   //summary of the article
-  summary: {
-    type: String,
-    required: true
+  author: {
+    type: String
+  },
+  postedAt: {
+    type: String
   },
   //comments
   comment: {

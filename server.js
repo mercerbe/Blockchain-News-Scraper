@@ -2,6 +2,7 @@
 //app dependencies
 require('dotenv').config()
 const express = require('express')
+const path = require('path')
 const mongoose = require('mongoose')
 const db = require('./models')
 
@@ -11,7 +12,6 @@ const PORT = process.env.PORT || 8080
 
 //body parser
 const bodyParser = require('body-parser')
-app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended : true }))
 
 //express static routes for semantic and public files

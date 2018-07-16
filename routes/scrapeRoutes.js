@@ -2,6 +2,7 @@
 const db = require('../models')
 const axios = require('axios')
 const cheerio = require('cheerio')
+const bodyParser = require('body-parser')
 
 //=============================scraping routes==================================//
 module.exports = app => {
@@ -10,24 +11,32 @@ module.exports = app => {
   app.get('/scrape', (req, res) => {
 
     //use axios to grab html
-    axios.get("https://www.the-blockchain.com/category/news/").then( res => {
+    //option to switch to cryptopanic.com
+    axios.get("https://www.the-blockchain.com/category/news/").then( response => {
+
       //load html into  cheerio
-      let $ = cheerio.load(res.data)
+      let $ = cheerio.load(response.data)
 
       //grab news elements
-      $("div.td_module_1").each( (i, element) => {
+      $("div.td-module-1").each( (i, element) => {
+
         //object for each result
         let result = {}
 
         //grab children elements from div
         result.headline = $(this)
-          .children("")
+          .children("h3")
           .text()
+          console.log("headline" + result.headline);
         result.url = $(this)
-          .children("")
+          .children("a")
           .attr('href')
-        result.summary = $(this)
-          .children("")
+        result.author = $(this)
+          .children(".td-post-author-name")
+          .text()
+        result.postedAt = $(this)
+          .children(".td-post-date")
+          .text()
 
         //for each result, create new Article in DB
         db.Article.create(result)
@@ -35,7 +44,7 @@ module.exports = app => {
             console.log(dbArticle)
           })
           .catch( err => {
-            return res.json(err.message)
+            return res.json(err)
           })
       })
 
