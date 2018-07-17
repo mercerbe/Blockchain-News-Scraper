@@ -13,55 +13,77 @@ module.exports = app => {
     request("https://www.the-blockchain.com/category/news/", (err, response, html) => {
       if(!err) {
         let $ = cheerio.load(html)
-        res.send(html)
+        //res.send(html)
       }
     })
   })
 
-  // //get route to scrape website
-  // app.get('/scrape', (req, res) => {
-  //
-  //   //use axios to grab html
-  //   //option to switch to cryptopanic.com
-  //   request("https://www.the-blockchain.com/category/news/").then( response => {
-  //
-  //     //load html into  cheerio
-  //     let $ = cheerio.load(response.data)
-  //
-  //     //grab news elements
-  //     $("div.td-module-1").each( (i, element) => {
-  //
-  //       //object for each result
-  //       let result = {}
-  //
-  //       //grab children elements from div
-  //       result.headline = $(this)
-  //         .children("h3")
-  //         .text()
-  //         console.log("headline" + result.headline);
-  //       result.url = $(this)
-  //         .children("a")
-  //         .attr('href')
-  //       result.author = $(this)
-  //         .children(".td-post-author-name")
-  //         .text()
-  //       result.postedAt = $(this)
-  //         .children(".td-post-date")
-  //         .text()
-  //
-  //       //for each result, create new Article in DB
-  //       db.Article.create(result)
-  //         .then( dbArticle => {
-  //           console.log(dbArticle)
-  //         })
-  //         .catch( err => {
-  //           return res.json(err)
-  //         })
-  //     })
-  //
-  //     //after scrape, send message
-  //     res.send("Scrape Complete!")
-  //   })
-  // })
+  //get route to scrape website
+  app.get('/scrape', (req, res) => {
+
+    //use request to grab html
+    request("https://www.the-blockchain.com/category/news/", (err, res, html) => {
+      //load to cheerio
+      const $ = cheerio.load(html)
+      let scrapedData = []
+
+      //grab all article elements
+      $("***************").each( (i, element) => {
+
+        //new obj for results
+        result = {}
+
+        //add data wanted to object
+        result.headline = $(this).findelementhere
+        result.url = $(this).findelementhere
+        result.author = $(this).findelementhere
+        result.postedAt = $(this).findelementhere
+
+        //Create new article from result obj
+        db.Article.create(result)
+          .then( dbArticle => {
+            console.log(dbArticle)
+          })
+          .catch( err => {
+            return res.json(err)
+            console.error(err)
+          })
+      })
+      //if scrape is successful
+      res.redirect('/')
+    })
+  })
+
+  //grab a single article by id
+  app.get('/read/:id', (req, res) => {
+    //handlebars object for article
+    let hbArticle = {
+      //==========data here============//
+      article: [],
+      body: []
+    }
+    //find article by id
+    db.Article.findOne({ _id: req.params.id })
+      //populate associated comments
+      .populate("comment")
+      .then( (err, dbArticle) => {
+        if(err) {
+          console.error(err)
+        } else {
+          hbArticle.article = dbArticle
+          let url = dbArticle.url
+          //get article from url
+          request(url, (error, res, html) => {
+            //use cheerio
+            $("************").each( (i, element) => {
+              hbArticle.body = $(this).find("****element containing text****")
+              //render article text/body and populated comments
+              res.render('article', hbArticle)
+              return false
+            })
+          })
+        }
+      })
+  })
 
 }

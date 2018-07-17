@@ -9,8 +9,8 @@ app.get('/', (req, res) => {
   res.redirect('/articles')
 })
 
-//get all articles
-app.get('/articles', (req, res) => {
+//get all articles for api
+app.get('/api/articles', (req, res) => {
   //sort by newest
   db.Article.find({})
     .sort({_id: -1})
@@ -19,38 +19,73 @@ app.get('/articles', (req, res) => {
     })
     .catch( err => {
       res.json(err)
+      console.error(err)
     })
 })
 
-//grab a single article by id
-app.get('/articles/:id', (req, res) => {
-
-  db.Article.findOne({_id: req.params.id})
-    .populate("comment")
-    .then( dbArticle => {
-      res.json(dbArticle)
-    })
-    .catch( err => {
-      res.json(err)
+//render articles
+app.get('/articles', (req, res) => {
+  //sort by newest
+  db.Article.find({}).sort({_id: -1})
+    //send to exphbs
+    .then( (err, data) => {
+      if(err) {
+        console.error(err)
+      } else {
+        //handlebars object
+        let hbArticle = { article: data }
+        res.render('index', hbArticle)
+      }
     })
 })
+
+//reset articles
+app.get('/removeArticles', (req, res) => {
+  //remove from db
+  Article.remove({}, (err, data) => {
+    if(err) {
+      console.error(err)
+    } else {
+      console.log('Articles removed from db')
+    }
+  })
+  res.redirect('/api/articles')
+})
+
 
 //post new comment to an article
-app.post('/articles/:id', (req, res) => {
-  //new comment
-  db.Comment.create(req.body)
-    .then( newComment => {
-      return db.Article.findOneAndUpdate(
-        {_id: req.params.id},
-        {comment: newComment._id},
-        {new: true})
-    })
-    .then( dbArticle => {
-        res.json(dbArticle)
-    })
-    .catch( err => {
-      res.json(err)
-    })
+app.post('/comments/:id', (req, res) => {
+  //data for comment
+  let name = req.body.name
+  let text = req.body.comment
+  let articleId = req.params.id
+  //data from form
+  let commentHbObj = {
+    name: name,
+    body: text
+  }
+  //new comment from model
+  var newComment = new Comment(commentHbObj)
+  //create comment
+  newComment.save( (err, dbComment) => {
+    if(err) {
+      console.err(err)
+    } else {
+      console.log(dbComment._id, articleId)
+      //update article in db to include new comment
+      db.Article.findOneAndUpdate(
+        { _id: req.params.id },
+        { $push: {'comment':dbComment._id} },
+        { new: true })
+        .then( (err, data) => {
+          if(err) {
+            console.error(err)
+          } else {
+            res.redirect('/read/' + articleId)
+          }
+        })
+    }
+  })
 })
 
 

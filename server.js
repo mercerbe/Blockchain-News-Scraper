@@ -4,8 +4,7 @@ require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
-const db = require('./models')
-const request = require('request')
+
 //express setup
 const app = express()
 const PORT = process.env.PORT || 8080
@@ -29,7 +28,12 @@ const logger = require('morgan')
 app.use(logger('dev'))
 
 //connect to Mongo DB via mongoose
-mongoose.connect('mongodb://localhost/BlockNewsDB')
+mongoose.connect('mongodb://localhost:27017/BlockNewsDB', {useNewUrlParser: true })
+const db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error:'))
+db.once('open', () => {
+  console.log('Connected')
+})
 
 //==================================Routing=====================================//
 require('./routes/scrapeRoutes.js')(app)
