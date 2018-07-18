@@ -28,7 +28,7 @@ app.get('/articles', (req, res) => {
   //sort by newest
   db.Article.find({}).sort({_id: -1})
     //send to exphbs
-    .then( (err, data) => {
+    .exec( (err, data) => {
       if(err) {
         console.error("error:", err)
       } else {
@@ -42,7 +42,7 @@ app.get('/articles', (req, res) => {
 //reset articles
 app.get('/removeArticles', (req, res) => {
   //remove from db
-  Article.remove({}, (err, data) => {
+  db.Article.remove({}, (err, data) => {
     if(err) {
       console.error(err)
     } else {
@@ -77,7 +77,7 @@ app.post('/comments/:id', (req, res) => {
         { _id: req.params.id },
         { $push: {'comment':dbComment._id} },
         { new: true })
-        .then( (err, data) => {
+        .exec( (err, data) => {
           if(err) {
             console.error(err)
           } else {

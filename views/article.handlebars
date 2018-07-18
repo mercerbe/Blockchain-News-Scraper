@@ -1,0 +1,35 @@
+<div class="ui inverted segment">
+  <div class="ui inverted secondary pointing menu">
+    <a class="item" href="/">Home</a>
+    <a class="item" href="/scrape">Scrape</a>
+    <a class="item" href="https://github.com/mercerbe/Blockchain-News-Scraper">Github Repo</a>
+  </div>
+</div>
+
+<div class="ui segment">
+  <h1>{{article.headline}}</h1>
+  <div class="">
+    {{body}}
+  </div>
+</div>
+
+<div class="ui segment">
+  <form class="" action="/comment/{{article._id}}" method="post">
+    <h3>Leave A Comment:</h3>
+    <div class="input-field">
+      <input type="text" name="name" placeholder="Jane Smith">
+    </div>
+    <div class="input-field">
+      <input type="text" name="body" placeholder="Your comment here...">
+    </div>
+    <div class="input-field">
+      <input type="sumbit" value="Submit" class="ui inverted orange button">
+    </div>
+  </form>
+
+</div>
+
+<div class="ui segment">
+  <h3>Comments:</h3>
+
+</div>

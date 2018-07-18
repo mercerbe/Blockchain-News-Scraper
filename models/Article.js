@@ -10,7 +10,8 @@ var ArticleSchema = new Schema({
   //title
   headline: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   //link
   url: {

@@ -11,3 +11,25 @@
     </a>
   </div>
 </div>
+
+<div class="ui cards">
+  {{#each article}}
+  <div class="ui centered raised card">
+    <div class="content">
+      <div class="center aligned header">{{this.headline}}</div>
+      <div class="center aligned description">
+        <a href="/articles/{{this._id}}"><button class="ui inverted orange button">Read More...</button></a>
+      </div>
+      <hr>
+      <div class="extra content">
+        <div class="left floated author">
+          <p>{{this.postedAt}}</p>
+        </div>
+        <div class="right floated author">
+          <p>{{this.author}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>
