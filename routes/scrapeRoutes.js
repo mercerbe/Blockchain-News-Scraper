@@ -1,7 +1,6 @@
 //============================dependencies=====================================//
 const db = require('../models')
 const request = require('request')
-const axios = require('axios')
 const cheerio = require('cheerio')
 const bodyParser = require('body-parser')
 
@@ -13,7 +12,7 @@ module.exports = app => {
     request("https://www.the-blockchain.com/category/news/", (err, response, html) => {
       if(!err) {
         let $ = cheerio.load(html)
-        //res.send(html)
+        res.send(html)
       }
     })
   })
@@ -28,16 +27,21 @@ module.exports = app => {
       let scrapedData = []
 
       //grab all article elements
-      $("***************").each( (i, element) => {
+      $("div.td_module_1").each( function(i, element) {
 
         //new obj for results
         result = {}
 
         //add data wanted to object
-        result.headline = $(this).findelementhere
-        result.url = $(this).findelementhere
-        result.author = $(this).findelementhere
-        result.postedAt = $(this).findelementhere
+        result.headline = $(this).find("a").eq( 2 ).text()
+        console.log(`--- ${result.headline} ---`);
+        result.url = $(this).find("a").eq( 2 ).attr("href")
+        console.log(`${result.url}`)
+        result.author = $(this).find("a").eq( 3 ).text()
+        console.log(`${result.author}`)
+        result.postedAt = $(this).find("time").text()
+        console.log(`${result.postedAt}`)
+        console.log("===========================")
 
         //Create new article from result obj
         db.Article.create(result)
@@ -45,13 +49,13 @@ module.exports = app => {
             console.log(dbArticle)
           })
           .catch( err => {
-            return res.json(err)
-            console.error(err)
+            console.error("error:", err)
           })
       })
       //if scrape is successful
-      res.redirect('/')
+      console.log("scrape finished...")
     })
+    res.redirect('/')
   })
 
   //grab a single article by id

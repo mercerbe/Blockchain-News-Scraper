@@ -30,7 +30,7 @@ app.get('/articles', (req, res) => {
     //send to exphbs
     .then( (err, data) => {
       if(err) {
-        console.error(err)
+        console.error("error:", err)
       } else {
         //handlebars object
         let hbArticle = { article: data }
