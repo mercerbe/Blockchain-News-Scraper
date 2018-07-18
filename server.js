@@ -27,12 +27,18 @@ app.set('views', './views')
 const logger = require('morgan')
 app.use(logger('dev'))
 
+//db configuration: check for localhost or mlab
+let databaseUri = 'mongodb://localhost:27017/BlockNewsDB'
+if(process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI)
+} else {
+  mongoose.connect(databaseUri, { useNewUrlParser: true })
+}
 //connect to Mongo DB via mongoose
-mongoose.connect('mongodb://localhost:27017/BlockNewsDB', {useNewUrlParser: true })
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', () => {
-  console.log('Connected')
+  console.log('Connected to DB')
 })
 
 //==================================Routing=====================================//

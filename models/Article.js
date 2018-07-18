@@ -26,10 +26,10 @@ var ArticleSchema = new Schema({
     type: String
   },
   //comments
-  comment: {
+  comment: [{
     type: Schema.Types.ObjectId,
     ref: "Comment"
-  }
+  }]
 })
 
 //create model
