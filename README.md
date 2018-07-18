@@ -11,7 +11,7 @@ Web-app that scrapes for news articles on the-blockchain.com and lets visitors v
 
 ## Demo
 
-You can demo this web app on heroku at:  [Blockchain-News-Scraper](https://tbd.herokuapp.com/).
+You can demo this web app on heroku at:  [Blockchain-News-Scraper](https://infinite-ravine-10771.herokuapp.com/).
 
 ## Installation
 
