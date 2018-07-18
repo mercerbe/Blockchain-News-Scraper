@@ -1,5 +1,6 @@
 //============================dependencies====================================//
 const db = require('../models')
+const Comment = require('../models/Comment.js')
 
 //===========================view routes======================================//
 module.exports = app => {
@@ -57,7 +58,7 @@ app.get('/removeArticles', (req, res) => {
 app.post('/comments/:id', (req, res) => {
   //data for comment
   let name = req.body.name
-  let text = req.body.comment
+  let text = req.body.body
   let articleId = req.params.id
   //data from form
   let commentHbObj = {
@@ -69,7 +70,7 @@ app.post('/comments/:id', (req, res) => {
   //create comment
   newComment.save( (err, dbComment) => {
     if(err) {
-      console.err(err)
+      console.error(err)
     } else {
       console.log(dbComment._id, articleId)
       //update article in db to include new comment
@@ -81,11 +82,14 @@ app.post('/comments/:id', (req, res) => {
           if(err) {
             console.error(err)
           } else {
-            res.redirect('/read/' + articleId)
+            console.log(data)
           }
         })
     }
   })
+  setTimeout(() => {
+    res.redirect('/articles/' + articleId)
+  },300)
 })
 
 

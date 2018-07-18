@@ -14,7 +14,7 @@
 </div>
 
 <div class="ui segment">
-  <form class="" action="/comment/{{article._id}}" method="post">
+  <form class="" action="/comments/{{article._id}}" method="POST">
     <h3>Leave A Comment:</h3>
     <div class="input-field">
       <input type="text" name="name" placeholder="Jane Smith">
@@ -23,7 +23,7 @@
       <input type="text" name="body" placeholder="Your comment here...">
     </div>
     <div class="input-field">
-      <input type="sumbit" value="Submit" class="ui inverted orange button">
+      <button type="sumbit" class="ui inverted orange button">Submit</button>
     </div>
   </form>
 
@@ -31,5 +31,15 @@
 
 <div class="ui segment">
   <h3>Comments:</h3>
-
+  {{#if article.comment}}
+    {{#each article.comment}}
+    <div class="ui segment">
+      <p>{{name}}</p>
+      <p>{{body}}</p>
+      <p>{{createdAt}}</p>
+    </div>
+    {{/each}}
+    {{else}}
+    <p>nothing here yet...</p>
+  {{/if}}
 </div>
