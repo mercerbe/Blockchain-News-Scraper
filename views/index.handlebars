@@ -2,23 +2,23 @@
 
 <div class="ui container">
   {{#each article}}
-  <div class="ui centered piled segment">
-    <div class="content">
-      <h3 class="header">{{this.headline}}</h3>
-      <div class="center aligned description">
-        <a href="/articles/{{this._id}}"><button class="ui olive button">Read More <i class="arrow alternate circle right outline icon"></i></button></a>
-      </div>
-      <hr>
-      <div class="extra content">
-        <div class="left floated author">
-          <p>{{this.postedAt}}</p>
+    <div class="ui centered piled segment">
+      <div class="content">
+        <h3 class="header">{{this.headline}}</h3>
+        <div class="center aligned description">
+          <a href="/articles/{{this._id}}"><button class="ui olive button">Read More <i class="arrow alternate circle right outline icon"></i></button></a>
         </div>
-        <div class="right floated author">
-          <p>{{this.author}}</p>
+        <hr>
+        <div class="extra content">
+          <div class="left floated author">
+            <p>{{this.postedAt}}</p>
+          </div>
+          <div class="right floated author">
+            <p>{{this.author}}</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   {{/each}}
 </div>
 
