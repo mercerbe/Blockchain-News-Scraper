@@ -1,18 +1,12 @@
-<div class="ui inverted segment">
-  <div class="ui inverted secondary pointing menu">
-    <a class="item" href="/">Home</a>
-    <a class="item" href="/scrape">Update Scrape</a>
-    <a class="item" href="https://github.com/mercerbe/Blockchain-News-Scraper">Github Repo</a>
-  </div>
-</div>
+{{> header}}
 
-<div class="ui cards">
+<div class="ui container">
   {{#each article}}
-  <div class="ui centered raised card">
+  <div class="ui centered piled segment">
     <div class="content">
-      <div class="center aligned header">{{this.headline}}</div>
+      <h3 class="header">{{this.headline}}</h3>
       <div class="center aligned description">
-        <a href="/articles/{{this._id}}"><button class="ui inverted orange button">Read More...</button></a>
+        <a href="/articles/{{this._id}}"><button class="ui olive button">Read More <i class="arrow alternate circle right outline icon"></i></button></a>
       </div>
       <hr>
       <div class="extra content">
@@ -27,3 +21,5 @@
   </div>
   {{/each}}
 </div>
+
+{{> footer}}
